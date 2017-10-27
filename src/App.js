@@ -41,6 +41,15 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.parentPoll !== this.state.parentPoll) {
+      let {canvasCtx} = this;
+      canvasCtx.fillStyle = (this.state.parentPoll % 2 === 1) ? "green" : "red";
+      canvasCtx.arc(75, 75, 50, 0, 2 * Math.PI);
+      canvasCtx.fill();
+    }
+  }
+
   render() {
 
     let {showPollChild, parentPoll, data} = this.state;
@@ -110,14 +119,13 @@ class PollChild extends Component {
   }
 
   render() {
-    console.log("PollChild rerendered")
+    console.log("PollChild rerendered");
     return (
       <ChildContainer>
         <H5>poll: {this.state.poll}</H5>
         <H5>parentPoll:{this.props.parentPoll}</H5>
       </ChildContainer>
-
-    )
+    );
   }
 }
 
