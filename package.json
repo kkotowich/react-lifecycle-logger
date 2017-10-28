@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^15.6.2",
+    "react-addons-perf": "^15.4.2",
+    "react-dom": "^15.6.2",
     "react-scripts": "1.0.14",
-    "styled-components": "^2.2.2"
+    "styled-components": "^2.2.2",
+    "uuid": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

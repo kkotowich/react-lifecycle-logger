@@ -1,27 +1,17 @@
 import React, { Component } from 'react';
 import loggify from './loggify';
-import { Parent, Column, Row, ChildContainer, H4, H5, Id, Value, Item, NoKey, Medium, Faster} from './styled';
+import { Parent, Column, ChildContainer, H4, H5} from './styled';
+import { BigList } from './lists';
 
 class App extends Component {
 
   static displayName = 'App';
   state = {
-    data: "No data"
-    , parentPoll: "No data yet"
+    parentPoll: "No data yet"
   };
 
-  fetchData = () => {
-      console.log("fetchData");
-      setTimeout ( () => {
-        console.log("data retrieved");
-        this.setState({
-          data: Math.random()
-        });
-      },1000);
-  }
 
   componentDidMount() {
-    this.fetchData();
     this.createParentPoll();
     this.canvasCtx = this.refs.appCanvas.getContext('2d');
     this.canvasCtx.fillStyle = "blue";
@@ -29,10 +19,16 @@ class App extends Component {
     this.canvasCtx.fill();
   }
 
-  createParentPoll = () => {
-    this.pollInterval = setInterval( () => {
-      this.setState({parentPoll: getRandomInt(1,2)})
-    },1000);
+  componentWillUnMount() {
+    clearInterval(this.pollInterval);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.parentPoll !== this.state.parentPoll){
+      return true;
+    }
+
+    return false;
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -50,14 +46,19 @@ class App extends Component {
     }
   }
 
+  createParentPoll = () => {
+    this.pollInterval = setInterval( () => {
+      this.setState({parentPoll: getRandomInt(1,2)})
+    },1000);
+  }
+
   render() {
 
-    let {showPollChild, parentPoll, data} = this.state;
+    let {showPollChild, parentPoll} = this.state;
 
     return (
       <Parent>
         <Column>
-          <H4>{data}</H4>
           <H4>{parentPoll}</H4>
           <canvas ref={"appCanvas"}
                   height={200}
@@ -78,6 +79,9 @@ class App extends Component {
             parentPoll = {parentPoll}
           />
         ) : null}
+        </Column>
+        <Column>
+          <BigList />
         </Column>
     </Parent>
     );
@@ -135,7 +139,7 @@ function getRandomInt (min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-App = loggify(App);
+//App = loggify(App);
 //PollChild = loggify(PollChild);
 
 export default App;
